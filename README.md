@@ -1,10 +1,13 @@
 # What is PyQcheck?
+
 PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Quick Check.
+
 - This framework is for random data testing.
 - The function's interface was referred from [macchiato.js](http://voqn.github.com/macchiato/). (from the top page...)
-# Supported which python version?
 
-Which python version does this support? This framework worked on python version 2.7.3
+# Which python version does this support? 
+
+This framework worked on python version 2.7.3
 
 # How to Install
 
