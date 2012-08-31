@@ -1,21 +1,18 @@
 # What is PyQcheck?
-
-- Created with referring of Haskell Quick Check.
-- Quick Check-like testing-framework.
-- Support of random data test.
-- Function's Interface was referring of the [macchiato.js](http://voqn.github.com/macchiato/).
-
+PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Quick Check.
+- This framework is for random data testing.
+- The function's interface was referred from [macchiato.js](http://voqn.github.com/macchiato/). (from the top page...)
 # Supported which python version?
 
-Confirmed python version is the 2.7.3
+Which python version does this support? This framework worked on python version 2.7.3
 
-# Install
+# How to Install
 
 ```
 python setup.py install
 ```
 
-# Usase of PyQCheck
+# How to Use PyQCheck
 ## Writing test
 
 - At method chain
@@ -59,7 +56,7 @@ def eq(x, y):
 PyQCheck(verbose=True).run(10).result() # run(10) is test count == 10
 ```
 
-## Result of test.
+## Test Result.
 
 ```
 ----- PyQCheck test results... -----
@@ -95,7 +92,7 @@ verbose:
 -----
 ```
 
-# Set of arbitrary limit.
+# Setting arbitrary limit.
 
 ``` python
 from pyqcheck.pyqcheck import PyQCheck, Arbitrary
@@ -122,7 +119,8 @@ def repeat(chars, n):
 PyQCheck(verbose=True).run(10).result()
 ```
 
-## Result of test.
+## Test result.
+
 ```
 ----- PyQCheck test results... -----
 label: 10 <= x <= 100 and y >= 30
@@ -157,7 +155,7 @@ verbose:
 -----
 ```
 
-# Supported multi processes.
+# PyQCheck supports multi process.
 
 ``` python
 from decimal import Decimal, getcontext
@@ -185,7 +183,7 @@ PyQCheck(process=2).add(
 ).run(100).result()
 ```
 
-# Catch error
+# Able to catch errors.
 
 - Sample
 
