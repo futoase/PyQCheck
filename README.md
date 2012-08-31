@@ -166,7 +166,6 @@ from pyqcheck.pyqcheck import PyQCheck, Arbitrary
 getcontext().proc = 60
 
 PyQCheck(process=2).add(
-).add(
   Arbitrary('integer', 'integer', 'integer').property(
     'x + y + z == z + y + x',
     lambda x, y, z : x + y + z == z + y + x
