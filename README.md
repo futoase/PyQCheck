@@ -102,8 +102,8 @@ from pyqcheck.pyqcheck import PyQCheck, Arbitrary
 
 PyQCheck().add(
   Arbitrary(
-    ('integer', dict(min=10, max=100)), // range of 10 - 100
-    ('integer', dict(min=30)), // range of 30 - max of default
+    ('integer', dict(min=10, max=100)), # range of 10 - 100
+    ('integer', dict(min=30)), # range of 30 - max of default
   ).property(
     '10 <= x <= 100 and y >= 30', lambda x, y : 10 <= x <= 100 and y >= 30
   )
