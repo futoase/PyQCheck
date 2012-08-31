@@ -19,6 +19,7 @@ python setup.py install
 ## Writing test
 
 - At method chain
+
 ``` python
 from pyqcheck.pyqcheck import PyQCheck, Arbitrary
 
