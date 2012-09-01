@@ -37,7 +37,7 @@ PyQCheck(verbose=True).add(
 ).run(10).result() # run(10) is test count == 10
 ```
 
-- At decolator
+- At decorator
 
 ``` python
 from pyqcheck.pyqcheck import PyQCheck, Arbitrary
@@ -94,6 +94,15 @@ verbose:
   ☀  eq(5032528890931210411, 2911935080322536883)
 -----
 ```
+
+# Supports arbitrary data type.
+
+- PyQString ('string')
+- PyQInteger ('integer')
+- PyQNumber ('number')
+- PyQHiragana ('hiragana')
+- PyQKatakana ('katakana')
+- PyQMomoclo ('momoclo')
 
 # Setting arbitrary limit.
 
