@@ -1,4 +1,4 @@
-# What is PyQcheck?
+# What is PyQCheck?
 
 PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Quick Check.
 
