@@ -11,7 +11,7 @@ def ten_or_less(n):
 def test():
   PyQCheck(verbose=True).add(
     Arbitrary(('integer', dict(max=30))).property(
-      'n <= 10 == True', ten_or_less, (ValueError,)
+      'n <= 10 == True', ten_or_less, ValueError,
     )
   ).run(10).result()
 

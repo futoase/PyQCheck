@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+import logging
+
 def print_results(results):
   # pretty print of results
   # [[label, func.func_name, marshal.dumps(func.func_code), success, failure, exceptions, verbose], ...]

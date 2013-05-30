@@ -1,1 +1,6 @@
-__all__ = ['pyqcheck', 'arbitrary', 'pyqworker']
+__all__ = [
+  'pyqcheck', 
+  'arbitrary', 
+  'pyqworker', 
+  'arbitraries'
+]

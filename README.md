@@ -7,7 +7,7 @@ PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Qu
 
 # Which python version does this support? 
 
-This framework worked on python version 2.7.3
+This framework worked on python version 3.3 or later
 
 # How to Install
 
