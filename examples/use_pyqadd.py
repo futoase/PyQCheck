@@ -12,7 +12,7 @@ def run():
   start = time.time()
 
   def is_hiragana(chars):
-    result = map(lambda x : ord(u'\u3040') <= ord(x) <= ord(u'\u309F'), chars)
+    result = [ord('\u3040') <= ord(x) <= ord('\u309F') for x in chars]
     return len(set(result)) == 1 and list(set(result))[0] == True
 
   def ten_or_less(n):
@@ -37,12 +37,12 @@ def run():
     Arbitrary(
       ('integer', dict(max=20))
     ).property(
-      'n <= 10 == True', ten_or_less, (ValueError,)
+      'n <= 10 == True', ten_or_less, ValueError,
     )
   ).run(1000).result()
 
   end = time.time() - start
-  print('finish: ' + str(end))
+  print(('finish: ' + str(end)))
 
 if __name__ == '__main__':
   run()

@@ -4,8 +4,9 @@ import sys
 import re
 import traceback
 import marshal
+from importlib import import_module
 
-from util import print_results
+from .util import print_results
 
 class ArbitraryList(list):
   def __init__(self, *args):
@@ -35,6 +36,7 @@ class Arbitrary(object):
 
   def generate_arbitraries(self):
     arbitraries = []
+
     for arbitrary in self.arbitraries:
       if isinstance(arbitrary, str):
         arbitrary_name = arbitrary.lower()
@@ -45,8 +47,10 @@ class Arbitrary(object):
 
       module_filename = 'pq_' + arbitrary_name
       klass = 'PyQ' + arbitrary_name.title()
-      module = __import__(
-        'arbitraries.' + module_filename, globals(), locals(), [klass], -1)
+      module = import_module(
+        'pyqcheck.arbitraries.' + module_filename
+      )
+
       arbitraries.append(getattr(module, klass)().generate(**arbitrary_limit))
 
     return arbitraries
@@ -73,15 +77,15 @@ class Arbitrary(object):
         if len(arbitraries) == 1:
           try:
             verbose_valiable = '(' + str(arbitraries[0]) + ')'
-          except UnicodeEncodeError, error:
-            verbose_valiable = u'(' + arbitraries[0] + u')'
+          except UnicodeEncodeError as error:
+            verbose_valiable = '(' + arbitraries[0] + ')'
         else:
           try:
             verbose_valiable = str(tuple(arbitraries))
-          except UnicodeEncodeError, error:
-            verbose_valiable = unicode(tuple(arbitraries))
+          except UnicodeEncodeError as error:
+            verbose_valiable = str(tuple(arbitraries))
 
-        verbose_valiable = verbose_valiable.encode('utf8')
+        #verbose_valiable = verbose_valiable.encode('utf8')
         result = func(*arbitraries)
 
         if self.type_of_return_value:
@@ -91,18 +95,19 @@ class Arbitrary(object):
 
         success = success + 1 if is_valid else success
         failure = failure + 1 if not is_valid else failure
-        icon = u'\u2600' if is_valid else u'\u2601'
+        icon = '\u2600' if is_valid else '\u2601'
 
         if self.verbose:
           verbose.append(
-            icon.encode('utf8') + '  ' +
-            func.func_name + verbose_valiable
+            (icon + '  ' +
+             func.__name__ + verbose_valiable)
           )
 
-      except exception, error:
+      except exception as error:
         if self.verbose:
-          verbose.append(u'\u2603'.encode('utf8') + '  ' + 
-            func.func_name + verbose_valiable
+          verbose.append(
+            ('\u2603' + '  ' + 
+             func.__name__ + verbose_valiable)
           )
 
         exception_key = re.match('^([a-zA-Z]+)\(.*$', repr(error)).group(1)
@@ -111,8 +116,8 @@ class Arbitrary(object):
 
     return [
              label,
-             func.func_name,
-             marshal.dumps(func.func_code),
+             func.__name__,
+             marshal.dumps(func.__code__),
              success,
              failure,
              exceptions,
@@ -133,18 +138,22 @@ class Arbitrary(object):
 
     except TypeError as error:
       print('TypeError! please check into function valiables.')
-      print(error.message)
+      print(error.args[0])
+      exc_type, exc_vlaue, exc_traceback = sys.exc_info()
+      traceback.print_tb(exc_traceback, limit=10, file=sys.stdout)
       sys.exit(0)
 
     except ImportError as error:
       print('ImportError! ' + 
             'please check import module name or module file-path.')
-      print(error.message)
+      print(error.args[0])
+      exc_type, exc_vlaue, exc_traceback = sys.exc_info()
+      traceback.print_tb(exc_traceback, limit=10, file=sys.stdout)
       sys.exit(0)
 
-    except Exception, error:
+    except Exception as error:
       print('!!! Exclude Error !!!')
-      print(error.message)
+      print(error.args[0])
       exc_type, exc_vlaue, exc_traceback = sys.exc_info()
       traceback.print_tb(exc_traceback, limit=10, file=sys.stdout)
       sys.exit(0)

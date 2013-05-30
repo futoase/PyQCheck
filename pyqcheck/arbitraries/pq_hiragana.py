@@ -7,7 +7,7 @@ class PyQHiragana(object):
   PyQHiragana of returned random hiragana charactors.
   unicode range is 3040-309F
   '''
-  HIRAGANA_RANGE = range(int("3040", 16), int("309F", 16) + 1)
+  HIRAGANA_RANGE = list(range(int("3040", 16), int("309F", 16) + 1))
 
   def __init__(self):
     pass
@@ -20,5 +20,5 @@ class PyQHiragana(object):
     max = max if isinstance(max, int) and max > 0 else 20
     range_length = random.randint(min, max)
     return (
-        lambda : u''.join([unichr(random.choice(PyQHiragana.HIRAGANA_RANGE))
+        lambda : ''.join([chr(random.choice(PyQHiragana.HIRAGANA_RANGE))
                  for x in range(range_length)]))

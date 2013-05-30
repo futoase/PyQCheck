@@ -19,5 +19,5 @@ class PyQString(object):
     max = max if max > 0 else 500
 
     return (lambda : ''.join([
-      random.choice(string.letters + string.digits) for x in range(random.randint(min, max))
+      random.choice(string.ascii_letters + string.digits) for x in range(random.randint(min, max))
      ]))

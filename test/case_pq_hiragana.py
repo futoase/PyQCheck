@@ -6,7 +6,7 @@ describe "PyQHiragana Test":
   it "generate random variable.":
     hiragana = PyQHiragana().generate()
     assert str(type(hiragana)).find('function')
-    assert isinstance(hiragana(), unicode)
+    assert isinstance(hiragana(), str)
 
   it "generate random variable of range set.":
     hiragana = PyQHiragana().generate(min=1, max=10)

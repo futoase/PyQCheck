@@ -2,9 +2,9 @@
 
 from multiprocessing import Process
 
-from arbitrary import Arbitrary, ArbitraryList
-from pyqworker import PyQWorker
-from util import print_results
+from .arbitrary import Arbitrary, ArbitraryList
+from .pyqworker import PyQWorker
+from .util import print_results
 
 class set_arbitrary(object):
   def __init__(self, *arbitraries, **kwargs):
@@ -39,7 +39,7 @@ class PyQCheck(object):
     if self.process > 1:
       from multiprocessing import Queue
     else:
-      from Queue import Queue
+      from queue import Queue
 
     queue = Queue(maxsize=len(PyQCheck.TEST_STEP))
     if self.process > 1:

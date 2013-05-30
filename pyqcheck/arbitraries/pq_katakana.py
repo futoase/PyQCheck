@@ -7,7 +7,7 @@ class PyQKatakana(object):
   PyQKatakana of returned random katakana charactors.
   unicode range is 30A0-30FF
   '''
-  KATAKANA_RANGE = range(int("30A0", 16), int("30FF", 16) + 1)
+  KATAKANA_RANGE = list(range(int("30A0", 16), int("30FF", 16) + 1))
 
   def __init__(self):
     pass
@@ -21,5 +21,5 @@ class PyQKatakana(object):
 
     random_length = random.randint(min,max)
     return (
-        lambda : ''.join([unichr(random.choice(PyQKatakana.KATAKANA_RANGE))
+        lambda : ''.join([chr(random.choice(PyQKatakana.KATAKANA_RANGE))
                  for x in range(random_length)]))

@@ -16,5 +16,5 @@ class PyQInteger(object):
     generate of random integer.
     '''
     min = min if isinstance(min, int) else 1
-    max = max if max is not None and isinstance(max, int) else sys.maxint
+    max = max if max is not None and isinstance(max, int) else sys.maxsize
     return lambda : random.randint(min, max)

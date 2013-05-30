@@ -6,7 +6,7 @@ describe "PyQKatakana Test":
   it "generate random variable.":
     katakana = PyQKatakana().generate()
     assert str(type(katakana)).find("function")
-    assert isinstance(katakana(), unicode)
+    assert isinstance(katakana(), str)
 
   it "generate random variable of range set.":
     katakana = PyQKatakana().generate(min=1, max=10)

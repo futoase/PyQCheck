@@ -43,12 +43,12 @@ describe "Arbitrary Test":
   it "arbitrary Exception test.":
     TEST_COUNT = 100
 
-    class LengthOverError (BaseException):
+    class LengthOverError(Exception):
       pass
 
     def length_check(x):
       if len(x) > 10:
-        raise LengthOverError
+        raise LengthOverError("Length over!")
       else:
         return x
 
@@ -56,7 +56,7 @@ describe "Arbitrary Test":
       Arbitrary(
         ('string', dict(min=11, max=40))
       ).property(
-        'len(x) > 10', length_check, (LengthOverError,)
+        'len(x) > 10', length_check, LengthOverError,
       ).run(TEST_COUNT).test_result
     )
     assert exceptions.get("LengthOverError") is not None
@@ -76,4 +76,3 @@ describe "Arbitrary Test":
     )
 
     assert success == TEST_COUNT
-
