@@ -21,7 +21,7 @@ python setup.py install
 - At method chain
 
 ``` python
-from pyqcheck.pyqcheck import PyQCheck, Arbitrary
+from pyqcheck import PyQCheck, Arbitrary
 
 def eq(x,y):
   return x * y == y * x and x + y == y + x
@@ -40,7 +40,7 @@ PyQCheck(verbose=True).add(
 - At decorator
 
 ``` python
-from pyqcheck.pyqcheck import PyQCheck, Arbitrary
+from pyqcheck import PyQCheck, Arbitrary
 
 @set_arbitrary('boolean', 'boolean')
 def de_morgan(x, y):
@@ -107,7 +107,7 @@ verbose:
 # Setting arbitrary limit.
 
 ``` python
-from pyqcheck.pyqcheck import PyQCheck, Arbitrary
+from pyqcheck import PyQCheck, Arbitrary
 
 PyQCheck().add(
   Arbitrary(
@@ -171,7 +171,7 @@ verbose:
 
 ``` python
 from decimal import Decimal, getcontext
-from pyqcheck.pyqcheck import PyQCheck, Arbitrary
+from pyqcheck import PyQCheck, Arbitrary
 
 getcontext().proc = 60
 
@@ -200,7 +200,7 @@ PyQCheck(process=2).add(
 - Sample
 
 ``` python
-from pyqcheck.pyqcheck import PyQCheck, Arbitrary
+from pyqcheck import PyQCheck, Arbitrary
 
 def ten_or_less(n):
   if n > 10:
