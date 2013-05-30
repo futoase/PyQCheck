@@ -12,7 +12,13 @@ This framework worked on python version 3.3 or later
 # How to Install
 
 ```
-python setup.py install
+> pip install PyQCheck
+```
+
+or
+
+```
+> easy_install PyQCheck
 ```
 
 # How to Use PyQCheck
