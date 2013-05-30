@@ -40,7 +40,7 @@ PyQCheck(verbose=True).add(
 - At decorator
 
 ``` python
-from pyqcheck import PyQCheck, Arbitrary
+from pyqcheck import PyQCheck, Arbitrary, set_arbitrary
 
 @set_arbitrary('boolean', 'boolean')
 def de_morgan(x, y):
