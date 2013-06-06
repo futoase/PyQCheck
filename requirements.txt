@@ -1,0 +1,4 @@
+PyQCheck==0.1
+clint==0.3.1
+distribute==0.6.34
+konira==0.3.2

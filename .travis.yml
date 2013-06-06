@@ -1,12 +1,10 @@
 language: python
 python: 
-  - "3.3"
-before_install:
-  - pip install konira
-before_script:
-  - rehash
-  - cd test
+  - 3.3
+install: 
+  - pip install -r requirements.txt --use-mirrors
 script:
+  - cd test
   - konira
 notifications:
   on_success: always
