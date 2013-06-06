@@ -1,0 +1,12 @@
+language: python
+python: 
+  - "3.3"
+before_install:
+  - pip install konira
+before_script:
+  - rehash
+  - cd test
+script:
+  - konira
+notifications:
+  on_success: always
