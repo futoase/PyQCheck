@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/futoase/PyQCheck.png?branch=master)](https://travis-ci.org/futoase/PyQCheck)
+
 # What is PyQCheck?
 
 PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Quick Check.
