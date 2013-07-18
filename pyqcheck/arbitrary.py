@@ -8,6 +8,13 @@ from importlib import import_module
 
 from .util import print_results
 
+class ArbitraryAbsturction(object):
+  def __init__(self):
+    pass
+
+  def generate(self):
+    raise NoImplementedError("Should extends use only this class.")
+
 class ArbitraryList(list):
   def __init__(self, *args):
     for arg in args:
@@ -34,24 +41,31 @@ class Arbitrary(object):
     self.arbitraries = args
     self.test_result = []
 
+  def __get_arbitrary_content(self, arbitrary):
+    if isinstance(arbitrary, str):
+      module_filename = 'pq_' + arbitrary.lower()
+      klass = 'PyQ' + arbitrary.title()
+      module = import_module(
+        'pyqcheck.arbitraries.' + module_filename
+      )
+      return getattr(module, klass)()
+
+    if isinstance(arbitrary, ArbitraryAbsturction):
+      return arbitrary
+
   def generate_arbitraries(self):
     arbitraries = []
 
     for arbitrary in self.arbitraries:
-      if isinstance(arbitrary, str):
-        arbitrary_name = arbitrary.lower()
-        arbitrary_limit = {}
-      elif isinstance(arbitrary, tuple):
-        arbitrary_name = arbitrary[0].lower()
+      if isinstance(arbitrary, tuple):
+        arbitrary_name = arbitrary[0]
         arbitrary_limit = arbitrary[1]
+      else:
+        arbitrary_name = arbitrary
+        arbitrary_limit = {}
 
-      module_filename = 'pq_' + arbitrary_name
-      klass = 'PyQ' + arbitrary_name.title()
-      module = import_module(
-        'pyqcheck.arbitraries.' + module_filename
-      )
-
-      arbitraries.append(getattr(module, klass)().generate(**arbitrary_limit))
+      ar = self.__get_arbitrary_content(arbitrary_name)
+      arbitraries.append(ar.generate(**arbitrary_limit))
 
     return arbitraries
 
