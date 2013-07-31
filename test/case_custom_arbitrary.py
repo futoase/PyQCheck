@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
 
-from _import import PyQCheck, Arbitrary, ArbitraryAbsturction
+from _import import PyQCheck, Arbitrary, ArbitraryAbstraction
 
-class CountryArbitrary(ArbitraryAbsturction):
+class CountryArbitrary(ArbitraryAbstraction):
   COUNTRIES = [
     'JAPAN',
     'GERMANY',
