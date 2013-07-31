@@ -8,7 +8,7 @@ __all__ = [
 
 from multiprocessing import Process
 
-from .arbitrary import Arbitrary, ArbitraryList, ArbitraryAbsturction
+from .arbitrary import Arbitrary, ArbitraryList, ArbitraryAbstraction
 from .pyqworker import PyQWorker
 from .util import print_results
 
