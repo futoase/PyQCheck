@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import sys
+
+if sys.version_info < (3, 3, 0):
+  sys.stderr.write("PyQCheck is require Python 3.3 or newer.\n")
+  sys.exit(-1)
+
 from distutils.core import setup
 
 setup(
