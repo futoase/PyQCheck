@@ -11,7 +11,7 @@ from distutils.core import setup
 
 setup(
   name="PyQCheck",
-  version="0.3.1",
+  version="0.3.2",
   description="PyQCheck is Quick Check-like random testing framework.",
   author="Keiji Matsuzaki",
   author_email="futoase@gmail.com",

@@ -8,7 +8,7 @@ from importlib import import_module
 
 from .util import print_results
 
-class ArbitraryAbsturction(object):
+class ArbitraryAbstraction(object):
   def __init__(self):
     pass
 
@@ -50,7 +50,7 @@ class Arbitrary(object):
       )
       return getattr(module, klass)()
 
-    if isinstance(arbitrary, ArbitraryAbsturction):
+    if isinstance(arbitrary, ArbitraryAbstraction):
       return arbitrary
 
   def generate_arbitraries(self):
