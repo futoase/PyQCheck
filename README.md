@@ -245,6 +245,42 @@ verbose:
 -----
 ```
 
+# Can create original arbitrary class.
+
+``` python
+
+from pyqcheck import PyQCheck, ArbitraryAbstraction, set_arbitrary
+
+# Class
+class CountryArbitrary(ArbitraryAbstraction):
+  COUNTRIES = [
+    'JAPAN',
+    'GERMANY',
+    'USA',
+    'UK',
+    'AUSTRALIA'
+  ]
+
+  def __init__(self):
+    pass
+
+  def generate(self):
+    '''
+    generate of random length array.
+    '''
+    import random
+    return lambda : [random.choice(CountryArbitrary.COUNTRIES) for x in range(10)]
+
+@set_arbitrary(CountryArbitrary)
+def thisCountryIHaveEverBeenTo(country_name):
+  '''
+  issubset({'JAPAN', 'GERMANY', 'USA', 'UK', 'AUSTRALIA'})
+  '''
+  return set(country_name).issubset({'JAPAN', 'GERMANY', 'USA', 'UK', 'AUSTRALIA'})
+
+PyQCheck(verbose=True).run(10).result()
+```
+
 # License
 
 MIT License
