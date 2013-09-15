@@ -6,6 +6,28 @@ __all__ = [
   'arbitraries'
 ]
 
+__name__ = "PyQCheck"
+__version__ = "0.3.2"
+__description__ = "PyQCheck is Quick Check-like random testing framework."
+__author__ = "Keiji Matsuzaki"
+__author_email__ = "futoase@gmail.com"
+__license__ = "MIT License"
+__url__ = "https://github.com/futoase/PyQCheck" 
+
+# See http://pypi.python.org/pypi?%3Aaction=list_classifiers.
+__classifiers__ = [
+  "Programming Language :: Python :: 3.3",
+  "Topic :: Software Development"
+]
+
+import sys
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.realpath(os.path.join(os.getcwd(), os.path.expanduser(__file__))))
+
+if not SCRIPT_DIR in sys.path:
+  sys.path.insert(0, os.path.normpath(SCRIPT_DIR))
+
 from multiprocessing import Process
 
 from .arbitrary import Arbitrary, ArbitraryList, ArbitraryAbstraction
