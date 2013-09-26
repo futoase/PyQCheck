@@ -41,6 +41,18 @@ class Arbitrary(object):
     self.arbitraries = args
     self.test_result = []
 
+    try:
+      encoding = kwargs['_encoding'] if '_encoding' in kwargs else sys.stdout.encoding
+      '\u2602'.encode(encoding)
+    except UnicodeEncodeError:
+      self.ICON_SUCCESS = 'success'
+      self.ICON_FAILURE = 'failure'
+      self.ICON_ERROR = 'error  '
+    else:
+      self.ICON_SUCCESS = '\u2600'
+      self.ICON_FAILURE = '\u2601'
+      self.ICON_ERROR = '\u2603'
+
   def __get_arbitrary_content(self, arbitrary):
     if isinstance(arbitrary, str):
       module_filename = 'pq_' + arbitrary.lower()
@@ -109,7 +121,7 @@ class Arbitrary(object):
 
         success = success + 1 if is_valid else success
         failure = failure + 1 if not is_valid else failure
-        icon = '\u2600' if is_valid else '\u2601'
+        icon = self.ICON_SUCCESS if is_valid else self.ICON_FAILURE
 
         if self.verbose:
           verbose.append(
@@ -120,7 +132,7 @@ class Arbitrary(object):
       except exception as error:
         if self.verbose:
           verbose.append(
-            ('\u2603' + '  ' + 
+            (self.ICON_ERROR + '  ' + 
              func.__name__ + verbose_valiable)
           )
 
