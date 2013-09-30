@@ -6,7 +6,7 @@ import traceback
 import marshal
 from importlib import import_module
 
-from .util import print_results
+from util import print_results
 
 class ArbitraryAbstraction(object):
   def __init__(self):
@@ -31,6 +31,21 @@ class ArbitraryList(list):
       "verbose": self[6]
     }.get(name)
 
+class ArbitraryResultSymbol(object):
+  WITH_EMOJI = True
+
+  @staticmethod
+  def success():
+    return u'\u2600' if ArbitraryResultSymbol.WITH_EMOJI else 'success'
+  
+  @staticmethod
+  def failure():
+    return u'\u2601' if ArbitraryResultSymbol.WITH_EMOJI else 'failure'
+
+  @staticmethod
+  def error():
+    return u'\u2603' if ArbitraryResultSymbol.WITH_EMOJI else 'error  '
+
 class Arbitrary(object):
   '''
   Arbitrary is returned specified object.
@@ -40,6 +55,9 @@ class Arbitrary(object):
   def __init__(self, *args, **kwargs):
     self.arbitraries = args
     self.test_result = []
+
+    if kwargs.get('without_emoji') is True:
+      ArbitraryResultSymbol.WITH_EMOJI = False
 
   def __get_arbitrary_content(self, arbitrary):
     if isinstance(arbitrary, str):
@@ -109,7 +127,7 @@ class Arbitrary(object):
 
         success = success + 1 if is_valid else success
         failure = failure + 1 if not is_valid else failure
-        icon = '\u2600' if is_valid else '\u2601'
+        icon = ArbitraryResultSymbol.success() if is_valid else ArbitraryResultSymbol.failure()
 
         if self.verbose:
           verbose.append(
@@ -120,7 +138,7 @@ class Arbitrary(object):
       except exception as error:
         if self.verbose:
           verbose.append(
-            ('\u2603' + '  ' + 
+            (ArbitraryResultSymbol.error() + '  ' + 
              func.__name__ + verbose_valiable)
           )
 
