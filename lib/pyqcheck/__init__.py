@@ -30,9 +30,9 @@ if not SCRIPT_DIR in sys.path:
 
 from multiprocessing import Process
 
-from .arbitrary import Arbitrary, ArbitraryList, ArbitraryAbstraction
-from .pyqworker import PyQWorker
-from .util import print_results
+from arbitrary import Arbitrary, ArbitraryList, ArbitraryAbstraction
+from pyqworker import PyQWorker
+from util import print_results
 
 class set_arbitrary(object):
   def __init__(self, *arbitraries, **kwargs):
