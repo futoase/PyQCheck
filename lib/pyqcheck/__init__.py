@@ -7,7 +7,7 @@ __all__ = [
 ]
 
 __name__ = "PyQCheck"
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 __description__ = "PyQCheck is Quick Check-like random testing framework."
 __author__ = "Keiji Matsuzaki"
 __author_email__ = "futoase@gmail.com"
