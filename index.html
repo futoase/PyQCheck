@@ -1,19 +1,349 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8"/>
-    <title>PyQCheck</title>
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Pyqcheck by futoase</title>
   </head>
+
   <body>
-    <div class="navbar">
-      <a class="navbar-brand">PyQCheck</a>
+    <header>
+      <div class="inner">
+        <h1>Pyqcheck</h1>
+        <h2>PyQCheck</h2>
+        <a href="https://github.com/futoase/PyQCheck" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p><a href="https://travis-ci.org/futoase/PyQCheck"><img src="https://travis-ci.org/futoase/PyQCheck.png?branch=master" alt="Build Status"></a></p>
+
+<h1>
+<a name="what-is-pyqcheck" class="anchor" href="#what-is-pyqcheck"><span class="octicon octicon-link"></span></a>What is PyQCheck?</h1>
+
+<p>PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Quick Check.</p>
+
+<ul>
+<li>This framework is for random data testing.</li>
+<li>The function's interface was referred from <a href="http://voqn.github.com/macchiato/">macchiato.js</a>. (from the top page...)</li>
+</ul><h1>
+<a name="which-python-version-does-this-support" class="anchor" href="#which-python-version-does-this-support"><span class="octicon octicon-link"></span></a>Which python version does this support?</h1>
+
+<p>This framework worked on python version 3.3 or later</p>
+
+<h1>
+<a name="how-to-install" class="anchor" href="#how-to-install"><span class="octicon octicon-link"></span></a>How to Install</h1>
+
+<pre><code>&gt; pip install PyQCheck
+</code></pre>
+
+<p>or</p>
+
+<pre><code>&gt; easy_install PyQCheck
+</code></pre>
+
+<h1>
+<a name="how-to-use-pyqcheck" class="anchor" href="#how-to-use-pyqcheck"><span class="octicon octicon-link"></span></a>How to Use PyQCheck</h1>
+
+<h2>
+<a name="writing-test" class="anchor" href="#writing-test"><span class="octicon octicon-link"></span></a>Writing test</h2>
+
+<ul>
+<li>At method chain</li>
+</ul><div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">pyqcheck</span> <span class="kn">import</span> <span class="n">PyQCheck</span><span class="p">,</span> <span class="n">Arbitrary</span>
+
+<span class="k">def</span> <span class="nf">eq</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">==</span> <span class="n">y</span> <span class="o">*</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+
+<span class="n">PyQCheck</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">(</span><span class="s">'boolean'</span><span class="p">,</span> <span class="s">'boolean'</span><span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'!(x || y) == !x &amp;&amp; !y'</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="n">y</span><span class="p">))</span> <span class="o">==</span> <span class="p">((</span><span class="ow">not</span> <span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">y</span><span class="p">))</span>
+  <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">(</span><span class="s">'integer'</span><span class="p">,</span> <span class="s">'integer'</span><span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'x * y == y * x and x + y == y + x'</span><span class="p">,</span> <span class="n">eq</span>
+  <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c"># run(10) is test count == 10</span>
+</pre></div>
+
+<ul>
+<li>At decorator</li>
+</ul><div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">pyqcheck</span> <span class="kn">import</span> <span class="n">PyQCheck</span><span class="p">,</span> <span class="n">Arbitrary</span><span class="p">,</span> <span class="n">set_arbitrary</span>
+
+<span class="nd">@set_arbitrary</span><span class="p">(</span><span class="s">'boolean'</span><span class="p">,</span> <span class="s">'boolean'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">de_morgan</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+  <span class="sd">'''</span>
+<span class="sd">  !(x || y) == !x &amp;&amp; !y', lambda x, y: (not(x or y)) == ((not x) and (not y))</span>
+<span class="sd">  '''</span>
+  <span class="k">return</span> <span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">x</span> <span class="ow">or</span> <span class="n">y</span><span class="p">))</span> <span class="o">==</span> <span class="p">((</span><span class="ow">not</span> <span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">y</span><span class="p">))</span>
+
+<span class="nd">@set_arbitrary</span><span class="p">(</span><span class="s">'integer'</span><span class="p">,</span> <span class="s">'integer'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">eq</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+  <span class="sd">'''</span>
+<span class="sd">  x * y == y * x and x + y == y + x</span>
+<span class="sd">  '''</span>
+  <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">==</span> <span class="n">y</span> <span class="o">*</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">==</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+
+<span class="n">PyQCheck</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="c"># run(10) is test count == 10</span>
+</pre></div>
+
+<h2>
+<a name="test-result" class="anchor" href="#test-result"><span class="octicon octicon-link"></span></a>Test Result.</h2>
+
+<pre><code>----- PyQCheck test results... -----
+label: !(x || y) == !x &amp;&amp; !y
+success: 10   
+failure: 0
+verbose:
+  ☀  &lt;lambda&gt;(True, True)
+  ☀  &lt;lambda&gt;(False, False)
+  ☀  &lt;lambda&gt;(False, True)
+  ☀  &lt;lambda&gt;(True, True)
+  ☀  &lt;lambda&gt;(True, True)
+  ☀  &lt;lambda&gt;(True, True)
+  ☀  &lt;lambda&gt;(True, True)
+  ☀  &lt;lambda&gt;(True, False)
+  ☀  &lt;lambda&gt;(False, True)
+  ☀  &lt;lambda&gt;(True, False)
+-----
+label: x * y == y * x and x + y == y + x
+success: 10
+failure: 0
+verbose: 
+  ☀  eq(5619883977492185900, 8098677974428651270)
+  ☀  eq(1083625604502060169, 8458294345657310737)
+  ☀  eq(4669876018772361359, 6247727992957273395)
+  ☀  eq(8339760176857203915, 8345011171974202548)
+  ☀  eq(7278259878279970866, 4100741748945006135)
+  ☀  eq(4817262410454816318, 3084576882465980476)
+  ☀  eq(2635121478675656588, 7568822804535567953)
+  ☀  eq(6708571901087888356, 1255734967659271542)
+  ☀  eq(2208040650061775673, 7460005457506446202)
+  ☀  eq(5032528890931210411, 2911935080322536883)
+-----
+</code></pre>
+
+<h1>
+<a name="supports-arbitrary-data-type" class="anchor" href="#supports-arbitrary-data-type"><span class="octicon octicon-link"></span></a>Supports arbitrary data type.</h1>
+
+<ul>
+<li>PyQString ('string')</li>
+<li>PyQInteger ('integer')</li>
+<li>PyQNumber ('number')</li>
+<li>PyQHiragana ('hiragana')</li>
+<li>PyQKatakana ('katakana')</li>
+<li>PyQMomoclo ('momoclo')</li>
+</ul><h1>
+<a name="setting-arbitrary-limit" class="anchor" href="#setting-arbitrary-limit"><span class="octicon octicon-link"></span></a>Setting arbitrary limit.</h1>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">pyqcheck</span> <span class="kn">import</span> <span class="n">PyQCheck</span><span class="p">,</span> <span class="n">Arbitrary</span>
+
+<span class="n">PyQCheck</span><span class="p">()</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">(</span>
+    <span class="p">(</span><span class="s">'integer'</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100</span><span class="p">)),</span> <span class="c"># range of 10 - 100</span>
+    <span class="p">(</span><span class="s">'integer'</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">30</span><span class="p">)),</span> <span class="c"># range of 30 - max of default</span>
+  <span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'10 &lt;= x &lt;= 100 and y &gt;= 30'</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="mi">10</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">100</span> <span class="ow">and</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">30</span>
+  <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nd">@set_arbitrary</span><span class="p">(</span>
+  <span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">10</span><span class="p">)),</span>
+  <span class="p">(</span><span class="s">'integer'</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">30</span><span class="p">)))</span>
+<span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+  <span class="sd">'''</span>
+<span class="sd">  (chars * n).split(chars) == n + 1</span>
+<span class="sd">  '''</span>
+  <span class="n">repeat_string</span> <span class="o">=</span> <span class="n">chars</span> <span class="o">*</span> <span class="n">n</span>
+  <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">repeat_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">chars</span><span class="p">))</span> <span class="o">==</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">PyQCheck</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
+<h2>
+<a name="test-result-1" class="anchor" href="#test-result-1"><span class="octicon octicon-link"></span></a>Test result.</h2>
+
+<pre><code>----- PyQCheck test results... -----
+label: 10 &lt;= x &lt;= 100 and y &gt;= 30
+success: 10   
+failure: 0
+verbose:
+  ☀  &lt;lambda&gt;(73, 2056916856135336406)
+  ☀  &lt;lambda&gt;(41, 1673657213508719924)
+  ☀  &lt;lambda&gt;(86, 1591870911858630638)
+  ☀  &lt;lambda&gt;(82, 7062489949342175354)
+  ☀  &lt;lambda&gt;(63, 4626992076240878338)
+  ☀  &lt;lambda&gt;(43, 7448218345050658578)
+  ☀  &lt;lambda&gt;(73, 412908156141536339)
+  ☀  &lt;lambda&gt;(45, 3541728769292566383)
+  ☀  &lt;lambda&gt;(36, 8830667218769458940)
+  ☀  &lt;lambda&gt;(73, 5267004395616289964)
+-----
+label: (chars * n).split(chars) == n + 1
+success: 10
+failure: 0
+verbose: 
+  ☀  repeat('f87YTMsjoob', 10)
+  ☀  repeat('SeFwvHNrmLAQozfKq3JE', 17)
+  ☀  repeat('N7rM3F9lraN', 23)
+  ☀  repeat('npHHcqBCGWrnHy2Uy', 27)
+  ☀  repeat('Xhv9XXynr9x0VBvmt', 5)
+  ☀  repeat('raxB8IobOeFxNnfM4Mk', 1)
+  ☀  repeat('W9uDeBi6bbA', 5)
+  ☀  repeat('qSxlbKKN8DM', 16)
+  ☀  repeat('0ystvLvvNdcQa2uRH', 13)
+  ☀  repeat('638ssJbQBgnZ65Ohfy', 23)
+-----
+</code></pre>
+
+<h1>
+<a name="pyqcheck-supports-multi-process" class="anchor" href="#pyqcheck-supports-multi-process"><span class="octicon octicon-link"></span></a>PyQCheck supports multi process.</h1>
+
+<div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span><span class="p">,</span> <span class="n">getcontext</span>
+<span class="kn">from</span> <span class="nn">pyqcheck</span> <span class="kn">import</span> <span class="n">PyQCheck</span><span class="p">,</span> <span class="n">Arbitrary</span>
+
+<span class="n">getcontext</span><span class="p">()</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="mi">60</span>
+
+<span class="n">PyQCheck</span><span class="p">(</span><span class="n">process</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">(</span><span class="s">'integer'</span><span class="p">,</span> <span class="s">'integer'</span><span class="p">,</span> <span class="s">'integer'</span><span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'x + y + z == z + y + x'</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">z</span> <span class="o">==</span> <span class="n">z</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span>
+  <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">(</span><span class="s">'number'</span><span class="p">,</span> <span class="s">'number'</span><span class="p">,</span> <span class="s">'number'</span><span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'Decimal(x) + Decimal(y) + Decimal(z) == Decimal(z) + Decimal(y) + Decimal(x)'</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="p">:</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">+</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">(</span>
+    <span class="p">(</span><span class="s">'string'</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+  <span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'len(chars) &lt;= 10'</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">chars</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">10</span>
+  <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
+<h1>
+<a name="able-to-catch-errors" class="anchor" href="#able-to-catch-errors"><span class="octicon octicon-link"></span></a>Able to catch errors.</h1>
+
+<ul>
+<li>Sample</li>
+</ul><div class="highlight highlight-python"><pre><span class="kn">from</span> <span class="nn">pyqcheck</span> <span class="kn">import</span> <span class="n">PyQCheck</span><span class="p">,</span> <span class="n">Arbitrary</span>
+
+<span class="k">def</span> <span class="nf">ten_or_less</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span>
+  <span class="k">return</span> <span class="bp">True</span>
+
+<span class="n">PyQCheck</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+  <span class="n">Arbitrary</span><span class="p">((</span><span class="s">'integer'</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">30</span><span class="p">)))</span><span class="o">.</span><span class="n">property</span><span class="p">(</span>
+    <span class="s">'n &lt;= 10 == True'</span><span class="p">,</span> <span class="n">ten_or_less</span><span class="p">,</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,)</span>
+  <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
+<ul>
+<li>Result</li>
+</ul><pre><code>----- PyQCheck test results... -----
+label: n &lt;= 10 == True
+success: 4
+failure: 0
+exceptions:
+  ValueError: 6
+verbose:
+  ☀  ten_or_less(6)
+  ☃  ten_or_less(27)
+  ☃  ten_or_less(27)
+  ☀  ten_or_less(5)
+  ☃  ten_or_less(21)
+  ☀  ten_or_less(10)
+  ☃  ten_or_less(18)
+  ☀  ten_or_less(2)
+  ☃  ten_or_less(18)
+  ☃  ten_or_less(12)
+-----
+</code></pre>
+
+<h1>
+<a name="can-create-original-arbitrary-class" class="anchor" href="#can-create-original-arbitrary-class"><span class="octicon octicon-link"></span></a>Can create original arbitrary class.</h1>
+
+<div class="highlight highlight-python"><pre>
+<span class="kn">from</span> <span class="nn">pyqcheck</span> <span class="kn">import</span> <span class="n">PyQCheck</span><span class="p">,</span> <span class="n">ArbitraryAbstraction</span><span class="p">,</span> <span class="n">set_arbitrary</span>
+
+<span class="c"># Class</span>
+<span class="k">class</span> <span class="nc">CountryArbitrary</span><span class="p">(</span><span class="n">ArbitraryAbstraction</span><span class="p">):</span>
+  <span class="n">COUNTRIES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">'JAPAN'</span><span class="p">,</span>
+    <span class="s">'GERMANY'</span><span class="p">,</span>
+    <span class="s">'USA'</span><span class="p">,</span>
+    <span class="s">'UK'</span><span class="p">,</span>
+    <span class="s">'AUSTRALIA'</span>
+  <span class="p">]</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+  <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    generate of random length array.</span>
+<span class="sd">    '''</span>
+    <span class="kn">import</span> <span class="nn">random</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="p">:</span> <span class="p">[</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">CountryArbitrary</span><span class="o">.</span><span class="n">COUNTRIES</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+
+<span class="nd">@set_arbitrary</span><span class="p">(</span><span class="n">CountryArbitrary</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">thisCountryIHaveEverBeenTo</span><span class="p">(</span><span class="n">country_name</span><span class="p">):</span>
+  <span class="sd">'''</span>
+<span class="sd">  issubset({'JAPAN', 'GERMANY', 'USA', 'UK', 'AUSTRALIA'})</span>
+<span class="sd">  '''</span>
+  <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">country_name</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">({</span><span class="s">'JAPAN'</span><span class="p">,</span> <span class="s">'GERMANY'</span><span class="p">,</span> <span class="s">'USA'</span><span class="p">,</span> <span class="s">'UK'</span><span class="p">,</span> <span class="s">'AUSTRALIA'</span><span class="p">})</span>
+
+<span class="n">PyQCheck</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+</pre></div>
+
+<h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>MIT License</p>
+
+<p>Copyright (c)  Keiji Matsuzaki <a href="mailto:futoase@gmail.com">futoase@gmail.com</a></p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/futoase/PyQCheck/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/futoase/PyQCheck/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/futoase/PyQCheck"></a> is maintained by <a href="https://github.com/futoase">futoase</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <div class="jumbotron">
-      <h1>PyQCheck</h1>
-      <p>PyQCheck is a Quick Check-like testing framework based on the idea of Haskell Quick Check.</p>
-      <p><a class="btn btn-primary btn-large" href="https://github.com/futoase/PyQCheck">Github Project Page</a>
-    </div>
+
+  
   </body>
 </html>
