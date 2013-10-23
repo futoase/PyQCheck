@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+import sys
+import io
 from _import import PyQCheck, Arbitrary, ArbitraryResultSymbol
 
 describe "With emoji":
@@ -93,3 +95,39 @@ describe "Without emoji":
     for result in results:
       for v in result.verbose:
         assert v.startswith('error  ')
+
+describe "Find encoding":
+
+  before each:
+    ArbitraryResultSymbol.WITH_EMOJI = True
+    PyQCheck().clear()
+
+  it "should print emoji":
+
+    results = PyQCheck(verbose=True).add(
+      Arbitrary('integer').property(
+        'always true', lambda x: True
+      )
+    ).run(10).results
+
+    for result in results:
+      for v in result.verbose:
+        assert v.startswith(u'\u2600')
+
+  it "should not print emoji":
+    stdout = sys.stdout
+    try:
+      buffer = io.FileIO(0, mode='wb')
+      sys.stdout = io.TextIOWrapper(buffer, encoding='cp932')
+
+      results = PyQCheck(verbose=True).add(
+        Arbitrary('integer').property(
+          'always true', lambda x: True
+        )
+      ).run(10).results
+    finally:
+      sys.stdout = stdout
+
+    for result in results:
+      for v in result.verbose:
+        assert v.startswith('success')

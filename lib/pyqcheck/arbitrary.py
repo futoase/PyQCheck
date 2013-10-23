@@ -56,7 +56,18 @@ class Arbitrary(object):
     self.arbitraries = args
     self.test_result = []
 
-    if kwargs.get('without_emoji') is True:
+    self.__check_emoji_ablity(kwargs.get('without_emoji'))
+
+  def __check_emoji_ablity(self, without_emoji):
+    try:
+      if sys.stdout.encoding is not None:
+        '\u2602'.encode(sys.stdout.encoding)
+      else:
+        '\u2602'.encode('utf-8')
+    except UnicodeEncodeError:
+        ArbitraryResultSymbol.WITH_EMOJI = False
+
+    if without_emoji:
       ArbitraryResultSymbol.WITH_EMOJI = False
 
   def __get_arbitrary_content(self, arbitrary):
