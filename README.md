@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/futoase/PyQCheck.png?branch=master)](https://travis-ci.org/futoase/PyQCheck)
+[![Build Status](https://travis-ci.org/futoase/PyQCheck.png?branch=master)](https://travis-ci.org/futoase/PyQCheck) [![Downloads](https://pypip.in/d/PyQCheck/badge.png)](https://crate.io/package/PyQCheck)
 
 # What is PyQCheck?
 
