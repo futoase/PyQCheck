@@ -30,9 +30,18 @@ if not SCRIPT_DIR in sys.path:
 
 from multiprocessing import Process
 
-from arbitrary import Arbitrary, ArbitraryList, ArbitraryAbstraction
+from prop import Prop, PropRunner
+from arbitrary import Arbitrary, ArbitraryAbstraction
 from pyqworker import PyQWorker
-from util import print_results
+from util import PrettyPrinter
+
+
+# for backward compatibility
+def __obsolete_property(target, label, func, *exception, **kwargs):
+    return Prop(target, func, label, *exception, **kwargs)
+
+Arbitrary.property = __obsolete_property
+
 
 class set_arbitrary(object):
   def __init__(self, *arbitraries, **kwargs):
@@ -43,8 +52,8 @@ class set_arbitrary(object):
   def __call__(self, func):
     label = func.__doc__ if func.__doc__ is not None else 'no label'
     PyQCheck(verbose=False).add(
-      Arbitrary(*self.arbitraries).property(
-        label.strip(), func, *self.exceptions, **self.arguments))
+      Prop(
+        Arbitrary(*self.arbitraries), func, label.strip(), *self.exceptions, **self.arguments))
 
 class PyQCheck(object):
   TEST_STEP = []
@@ -69,25 +78,27 @@ class PyQCheck(object):
     else:
       from queue import Queue
 
+    runner = PropRunner(count, self.verbose)
     queue = Queue(maxsize=len(PyQCheck.TEST_STEP))
     if self.process > 1:
       # multi process
       PyQWorker().set([
         Process(
-          target=test.run, args=(count, self.verbose), kwargs={"queue": queue})         for test in PyQCheck.TEST_STEP
+          target=runner.run, args=test, kwargs={"queue": queue})         for test in PyQCheck.TEST_STEP
       ]).start(self.process)
     else:
       # linear
       for test in PyQCheck.TEST_STEP:
-        test.run(count, self.verbose, queue=queue)
+        runner.run(test, queue=queue)
 
     length = len(PyQCheck.TEST_STEP)
     while True:
       if queue.full():
         print('finish.')
         for i in range(length):
-          self.results.append(ArbitraryList(*queue.get()))
+          self.results.append(queue.get())
         return self
 
-  def result(self):
-    print_results(self.results)
+  def result(self, with_emoji=True):
+    printer = PrettyPrinter(with_emoji)
+    printer.print_results(self.results)

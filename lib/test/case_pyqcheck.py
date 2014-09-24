@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from _import import PyQCheck, Arbitrary, set_arbitrary
+from _import import PyQCheck, Arbitrary, set_arbitrary, Prop
 from decimal import Decimal, getcontext
 
 getcontext().prec = 60
@@ -11,12 +11,13 @@ describe "PyQCheck Test":
 
   it "later run.":
     PyQCheck().add(
-      Arbitrary(
-        ('string', dict(min=10, max=1000)),
-        ('integer', dict(max=30))
-      ).property(
-        'len(x * y) == len(x) * y',
-        lambda x, y: len(x * y) == len(x) * y
+      Prop(
+        Arbitrary(
+          ('string', dict(min=10, max=1000)),
+          ('integer', dict(max=30))
+        ),
+        lambda x, y: len(x * y) == len(x) * y,
+        'len(x * y) == len(x) * y'
       )
     )
 
@@ -41,29 +42,32 @@ describe "PyQCheck Test":
     TEST_COUNT = 100
 
     results = PyQCheck().add(
-      Arbitrary(
-        ('integer', dict(max=10)), 
-        ('integer', dict(min=30)),
-        'integer'
-      ).property(
-        'x + y + z == z + y + x', 
-        lambda x, y, z : x + y + z == z + y + x
+      Prop(
+        Arbitrary(
+          ('integer', dict(max=10)),
+          ('integer', dict(min=30)),
+          'integer'
+        ),
+        lambda x, y, z : x + y + z == z + y + x,
+        'x + y + z == z + y + x'
       )
     ).add(
-      Arbitrary(
-        'number', 
-        ('number', dict(min=0.5, max=100.3)),
-        ('number', dict(max=130.3))
-      ).property(
-        'Decimal(x) + Decimal(y) + Decimal(z) == Decimal(z) + Decimal(y) + Decimal(x)',
-        lambda x, y, z : Decimal(x) + Decimal(y) + Decimal(z) == Decimal(z) + Decimal(y) + Decimal(x)
+      Prop(
+        Arbitrary(
+          'number',
+          ('number', dict(min=0.5, max=100.3)),
+          ('number', dict(max=130.3))
+        ),
+        lambda x, y, z : Decimal(x) + Decimal(y) + Decimal(z) == Decimal(z) + Decimal(y) + Decimal(x),
+        'Decimal(x) + Decimal(y) + Decimal(z) == Decimal(z) + Decimal(y) + Decimal(x)'
       )
     ).add(
-      Arbitrary(
-        ('string', dict(max=10))
-      ).property(
-        'len(chars) <= 10',
-        lambda chars : len(chars) <= 10
+      Prop(
+        Arbitrary(
+          ('string', dict(max=10))
+        ),
+        lambda chars : len(chars) <= 10,
+        'len(chars) <= 10'
       )
     ).run(TEST_COUNT).results
 
