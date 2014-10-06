@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import logging
-
 
 class PropResultSymbol:
     def __init__(self, with_emoji):

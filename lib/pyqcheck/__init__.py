@@ -40,7 +40,17 @@ from util import PrettyPrinter
 def __obsolete_property(target, label, func, *exception, **kwargs):
     return Prop(target, func, label, *exception, **kwargs)
 
+def __obsolete_run(target, count=15, verbose=True, queue=None):
+    runner = PropRunner(count, verbose)
+    return runner.run(target, queue)
+
+def __obsolete_result(target):
+    printer = PrettyPrinter(True)
+    printer.print_results([target.test_result])
+
 Arbitrary.property = __obsolete_property
+Prop.run = __obsolete_run
+PropRunner.result = __obsolete_result
 
 
 class set_arbitrary(object):
@@ -84,7 +94,7 @@ class PyQCheck(object):
       # multi process
       PyQWorker().set([
         Process(
-          target=runner.run, args=test, kwargs={"queue": queue})         for test in PyQCheck.TEST_STEP
+          target=runner.run, args=(test,), kwargs={"queue": queue})         for test in PyQCheck.TEST_STEP
       ]).start(self.process)
     else:
       # linear

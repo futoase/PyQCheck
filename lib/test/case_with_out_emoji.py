@@ -2,7 +2,7 @@
 
 import sys
 import io
-from _import import PyQCheck, Arbitrary, Prop, PrettyPrinter
+from _import import PyQCheck, Arbitrary, PrettyPrinter
 
 describe "With emoji":
 
@@ -11,9 +11,8 @@ describe "With emoji":
 
   it "should be result is always success":
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        lambda x: True, 'allways true'
+      Arbitrary('integer').property(
+        'allways true', lambda x: True
       )
     ).run(10).results
 
@@ -24,9 +23,8 @@ describe "With emoji":
 
   it "should be result is always failure":
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        lambda x: False, 'allways false'
+      Arbitrary('integer').property(
+        'allways false', lambda x: False
       )
     ).run(10).results
 
@@ -44,9 +42,8 @@ describe "With emoji":
       raise CustomError("Error!")
 
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        throw_exception, 'allways true', CustomError
+      Arbitrary('integer').property(
+        'allways true', throw_exception, CustomError
       )
     ).run(10).results
 
@@ -62,9 +59,8 @@ describe "Without emoji":
 
   it "should be result is always success":
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        lambda x: True, 'allways true'
+      Arbitrary('integer').property(
+        'allways true', lambda x: True
       )
     ).run(10).results
 
@@ -75,9 +71,8 @@ describe "Without emoji":
 
   it "should be result is always failure":
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        lambda x: False, 'allways false'
+      Arbitrary('integer').property(
+        'allways false', lambda x: False
       )
     ).run(10).results
 
@@ -95,9 +90,8 @@ describe "Without emoji":
       raise CustomError("Error!")
 
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        throw_exception, 'allways true', CustomError
+      Arbitrary('integer').property(
+        'allways true', throw_exception, CustomError
       )
     ).run(10).results
 
@@ -114,9 +108,8 @@ describe "Find encoding":
   it "should print emoji":
 
     results = PyQCheck(verbose=True).add(
-      Prop(
-        Arbitrary('integer'),
-        lambda x: True, 'always true'
+      Arbitrary('integer').property(
+        'always true', lambda x: True
       )
     ).run(10).results
 
@@ -132,9 +125,8 @@ describe "Find encoding":
       sys.stdout = io.TextIOWrapper(buffer, encoding='cp932')
 
       results = PyQCheck(verbose=True).add(
-        Prop(
-          Arbitrary('integer'),
-          lambda x: True, 'always true'
+        Arbitrary('integer').property(
+          'always true', lambda x: True
         )
       ).run(10).results
     finally:

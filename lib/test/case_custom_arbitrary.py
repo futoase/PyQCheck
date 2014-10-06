@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from _import import PyQCheck, Arbitrary, ArbitraryAbstraction, Prop, PropRunner
+from _import import PyQCheck, Arbitrary, ArbitraryAbstraction
 
 class CountryArbitrary(ArbitraryAbstraction):
   COUNTRIES = [
@@ -31,14 +31,11 @@ describe "Custom Arbitrary Test":
     test_func = lambda x: set(x).issubset({'JAPAN', 'GERMANY', 'USA', 'UK', 'AUSTRALIA'})
 
     result = (
-      PropRunner(1000).run(
-        Prop(
-          Arbitrary(
-            CountryArbitrary()
-          ),
-          test_func, test_label
-        )
-      ).test_result
+      Arbitrary(
+        CountryArbitrary()
+      ).property(
+        test_label, test_func
+      ).run(1000).test_result
     )
 
     assert result.label == test_label

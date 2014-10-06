@@ -1,8 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import types
-import marshal
-
 from _import import PyQCheck, Arbitrary
 
 describe "Arbitrary Test":

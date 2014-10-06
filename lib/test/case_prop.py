@@ -7,16 +7,16 @@ describe "Prop Test":
   before each:
     PyQCheck.TEST_STACK = []
 
-  it "should success all tests when Prop runs a true property.":
+  it "should succeed all tests when Prop shows true.":
     test_label = 'x + y == y + x'
-    test_func = lambda x, y : x + y == y + x
+    test_func = lambda x, y: x + y == y + x
 
     result = (
       PropRunner(1000).run(
         Prop(
           Arbitrary(
-            ('number', dict(min=5, max=10)),
-            ('number', dict(min=5, max=10))
+            ('number', {"min":5, "max":10}),
+            ('number', {"min":5, "max":10})
           ),
           test_func, test_label
         )
@@ -38,7 +38,7 @@ describe "Prop Test":
     result = (
       PropRunner(test_number).run(
         Prop(
-          Arbitrary(('integer', dict(max=30))),
+          Arbitrary(('integer', {"max":30})),
           ten_or_less, test_label, ValueError
         )
       ).test_result
@@ -57,7 +57,7 @@ describe "Prop Test":
       PropRunner(TEST_COUNT).run(
         Prop(
           Arbitrary(
-            ('string', dict(min=10))
+            ('string', {"min":10})
           ),
           return_tuple, 'return result type is tuple', type=tuple
         )
