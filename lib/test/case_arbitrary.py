@@ -5,7 +5,7 @@ from _import import PyQCheck, Arbitrary
 describe "Arbitrary Test":
 
   before each:
-    PyQCheck.TEST_STACK = []
+    PyQCheck().clear()
 
   it "generate arbitrary instance.":
     arbitrary = Arbitrary('number', 'number')
@@ -33,7 +33,7 @@ describe "Arbitrary Test":
     results = (
       PyQCheck(verbose=False).add(
         Arbitrary('boolean', 'boolean').property(
-            test_label1, test_func1
+          test_label1, test_func1
         )
       ).add(
         Arbitrary('integer', 'integer').property(
