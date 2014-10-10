@@ -68,9 +68,8 @@ class PropRunner:
 
     TEST_COUNT = 15
 
-    def __init__(self, count=15, verbose=False):
+    def __init__(self, count=15):
         self.count = count if count >= 1 else PropRunner.TEST_COUNT
-        self.verbose = verbose
         self.test_result = []
 
     def run(self, prop, queue=None):
@@ -87,16 +86,14 @@ class PropRunner:
                     success = success + 1 if is_valid else success
                     failure = failure + 1 if not is_valid else failure
 
-                    if self.verbose:
-                        results.append(prop_result)
+                    results.append(prop_result)
                 else:
                     _, _, error = prop_result.failed
                     exception_key = re.match('^([a-zA-Z]+)\(.*$', repr(error)).group(1)
                     exceptions.setdefault(exception_key, 0)
                     exceptions[exception_key] += 1
 
-                    if self.verbose:
-                        results.append(prop_result)
+                    results.append(prop_result)
 
             test_result = RunningResult(
                 prop.label,

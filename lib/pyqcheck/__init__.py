@@ -40,12 +40,14 @@ from util import PrettyPrinter
 def __obsolete_property(target, label, func, *exception, **kwargs):
     return Prop(target, func, label, *exception, **kwargs)
 
-def __obsolete_run(target, count=15, verbose=True, queue=None):
-    runner = PropRunner(count, verbose)
+def __obsolete_run(target, count=15, queue=None):
+    # lose compatibility: remove 'verbose' argument
+    runner = PropRunner(count)
     return runner.run(target, queue)
 
-def __obsolete_result(target):
-    printer = PrettyPrinter(True)
+def __obsolete_result(target, verbose=True):
+    # lose compatibility: add 'verbose' argument
+    printer = PrettyPrinter(verbose, True)
     printer.print_results([target.test_result])
 
 Arbitrary.property = __obsolete_property
@@ -88,7 +90,7 @@ class PyQCheck(object):
     else:
       from queue import Queue
 
-    runner = PropRunner(count, self.verbose)
+    runner = PropRunner(count)
     queue = Queue(maxsize=len(PyQCheck.TEST_STEP))
     if self.process > 1:
       # multi process
@@ -110,5 +112,5 @@ class PyQCheck(object):
         return self
 
   def result(self, with_emoji=True):
-    printer = PrettyPrinter(with_emoji)
+    printer = PrettyPrinter(self.verbose, with_emoji)
     printer.print_results(self.results)

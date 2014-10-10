@@ -16,7 +16,7 @@ describe "With emoji":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(True)
+    printer = PrettyPrinter(True, True)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2600')
@@ -28,7 +28,7 @@ describe "With emoji":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(True)
+    printer = PrettyPrinter(True, True)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2601')
@@ -47,7 +47,7 @@ describe "With emoji":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(True)
+    printer = PrettyPrinter(True, True)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2603')
@@ -64,7 +64,7 @@ describe "Without emoji":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(False)
+    printer = PrettyPrinter(True, False)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('success')
@@ -76,7 +76,7 @@ describe "Without emoji":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(False)
+    printer = PrettyPrinter(True, False)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('failure')
@@ -95,7 +95,7 @@ describe "Without emoji":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(False)
+    printer = PrettyPrinter(True, False)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('error  ')
@@ -113,7 +113,7 @@ describe "Find encoding":
       )
     ).run(10).results
 
-    printer = PrettyPrinter(True)
+    printer = PrettyPrinter(True, True)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2600')
@@ -132,7 +132,7 @@ describe "Find encoding":
     finally:
       sys.stdout = stdout
 
-    printer = PrettyPrinter(False)
+    printer = PrettyPrinter(True, False)
     for result in results:
       for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('success')

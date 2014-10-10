@@ -16,7 +16,8 @@ class PropResultSymbol:
 
 
 class PrettyPrinter:
-    def __init__(self, with_emoji):
+    def __init__(self, verbose, with_emoji):
+        self.verbose = verbose
         self.result_symbol = self.__check_emoji_ablity(with_emoji)
 
     @staticmethod
@@ -44,7 +45,7 @@ class PrettyPrinter:
                 print('exceptions: ')
                 for key in result.exceptions:
                     print('  ' + key + ': ' + str(result.exceptions[key]))
-            if len(result.prop_results) != 0:
+            if self.verbose and len(result.prop_results) != 0:
                 print('verbose: ')
                 verboses = self.to_verbose_string(result.prop_results)
                 for verbose in verboses:
