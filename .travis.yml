@@ -2,7 +2,11 @@ language: python
 python: 
   - 3.3
 install: 
-  - sudo pip install -r requirements.txt --use-mirrors
+  - pip install -r requirements.txt --use-mirrors
+  - git clone https://github.com/Gab-km/konira_portable konira
+  - cd ./konira
+  - python ./setup.py install
+  - cd ..
 script:
   - cd lib/test
   - konira
