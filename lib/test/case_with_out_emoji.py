@@ -2,12 +2,11 @@
 
 import sys
 import io
-from _import import PyQCheck, Arbitrary, ArbitraryResultSymbol
+from _import import PyQCheck, Arbitrary, PrettyPrinter
 
 describe "With emoji":
 
   before each:
-    ArbitraryResultSymbol.WITH_EMOJI = True
     PyQCheck().clear()
 
   it "should be result is always success":
@@ -17,8 +16,9 @@ describe "With emoji":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, True)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2600')
 
   it "should be result is always failure":
@@ -28,8 +28,9 @@ describe "With emoji":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, True)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2601')
 
   it "should be result is always throw error":
@@ -46,14 +47,14 @@ describe "With emoji":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, True)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2603')
 
 describe "Without emoji":
 
   before each:
-    ArbitraryResultSymbol.WITH_EMOJI = False
     PyQCheck().clear()
 
   it "should be result is always success":
@@ -63,8 +64,9 @@ describe "Without emoji":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, False)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('success')
 
   it "should be result is always failure":
@@ -74,8 +76,9 @@ describe "Without emoji":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, False)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('failure')
 
   it "should be result is always throw error":
@@ -92,14 +95,14 @@ describe "Without emoji":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, False)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('error  ')
 
 describe "Find encoding":
 
   before each:
-    ArbitraryResultSymbol.WITH_EMOJI = True
     PyQCheck().clear()
 
   it "should print emoji":
@@ -110,8 +113,9 @@ describe "Find encoding":
       )
     ).run(10).results
 
+    printer = PrettyPrinter(True, True)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith(u'\u2600')
 
   it "should not print emoji":
@@ -128,6 +132,7 @@ describe "Find encoding":
     finally:
       sys.stdout = stdout
 
+    printer = PrettyPrinter(True, False)
     for result in results:
-      for v in result.verbose:
+      for v in printer.to_verbose_string(result.prop_results):
         assert v.startswith('success')

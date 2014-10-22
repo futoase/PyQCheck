@@ -42,16 +42,16 @@ describe "PyQCheck Test":
 
     results = PyQCheck().add(
       Arbitrary(
-        ('integer', dict(max=10)), 
+        ('integer', dict(max=10)),
         ('integer', dict(min=30)),
         'integer'
       ).property(
-        'x + y + z == z + y + x', 
+        'x + y + z == z + y + x',
         lambda x, y, z : x + y + z == z + y + x
       )
     ).add(
       Arbitrary(
-        'number', 
+        'number',
         ('number', dict(min=0.5, max=100.3)),
         ('number', dict(max=130.3))
       ).property(

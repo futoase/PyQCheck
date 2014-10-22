@@ -30,7 +30,7 @@ describe "Custom Arbitrary Test":
     test_label = "set(x).issubset({'JAPAN', 'GERMANY', 'USA', 'UK', 'AUSTRALIA'}"
     test_func = lambda x: set(x).issubset({'JAPAN', 'GERMANY', 'USA', 'UK', 'AUSTRALIA'})
 
-    label, func_name, func_code, success, failure, exceptions, verbose = (
+    result = (
       Arbitrary(
         CountryArbitrary()
       ).property(
@@ -38,6 +38,6 @@ describe "Custom Arbitrary Test":
       ).run(1000).test_result
     )
 
-    assert label == test_label
-    assert success == 1000
-    assert failure == 0
+    assert result.label == test_label
+    assert result.success == 1000
+    assert result.failure == 0

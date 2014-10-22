@@ -1,14 +1,11 @@
 # -*- coding:utf-8 -*-
 
-import types
-import marshal
-
 from _import import PyQCheck, Arbitrary
 
 describe "Arbitrary Test":
 
   before each:
-    PyQCheck.TEST_STACK = []
+    PyQCheck().clear()
 
   it "generate arbitrary instance.":
     arbitrary = Arbitrary('number', 'number')
@@ -23,56 +20,31 @@ describe "Arbitrary Test":
     assert isinstance(gen_arbitraries[0](), float)
     assert isinstance(gen_arbitraries[1](), str)
 
-  it "arbitrary test run.":
-    test_label = 'x + y == y + x'
-    test_func = lambda x, y : x + y == y + x
+  it "should work with the obsolete property method.":
+    def eq(x,y):
+      return x * y == y * x and x + y == y + x
 
-    label, func_name, func_code, success, failure, exceptions, verbose = (
-      Arbitrary(
-        ('number', dict(min=5, max=10)), 
-        ('number', dict(min=5, max=10))
-      ).property(
-        test_label, test_func
-      ).run(1000).test_result
+    test_label1 = '!(x || y) == !x && !y'
+    test_func1 = lambda x, y: (not(x or y)) == ((not x) and (not y))
+    test_label2 = 'x * y == y * x and x + y == y + x'
+    test_func2 = eq
+    test_count = 1000
+
+    results = (
+      PyQCheck(verbose=False).add(
+        Arbitrary('boolean', 'boolean').property(
+          test_label1, test_func1
+        )
+      ).add(
+        Arbitrary('integer', 'integer').property(
+          test_label2, test_func2
+        )
+      ).run(test_count).results
     )
 
-    assert label == test_label
-    assert success == 1000
-    assert failure == 0
-
-  it "arbitrary Exception test.":
-    TEST_COUNT = 100
-
-    class LengthOverError(Exception):
-      pass
-
-    def length_check(x):
-      if len(x) > 10:
-        raise LengthOverError("Length over!")
-      else:
-        return x
-
-    label, func_name, func_code, success, failure, exceptions, verbose = (
-      Arbitrary(
-        ('string', dict(min=11, max=40))
-      ).property(
-        'len(x) > 10', length_check, LengthOverError,
-      ).run(TEST_COUNT).test_result
-    )
-    assert exceptions.get("LengthOverError") is not None
-
-  it "check result type test.":
-    TEST_COUNT = 100
-
-    def return_tuple(string):
-      return tuple(string)
-
-    label, func_name, func_code, success, failure, exceptions, verbose = (
-      Arbitrary(
-        ('string', dict(min=10))
-      ).property(
-        'return result type is tuple', return_tuple, type=tuple
-      ).run(TEST_COUNT).test_result
-    )
-
-    assert success == TEST_COUNT
+    assert results[0].label == test_label1
+    assert results[0].success == test_count
+    assert results[0].failure == 0
+    assert results[1].label == test_label2
+    assert results[1].success == test_count
+    assert results[1].failure == 0

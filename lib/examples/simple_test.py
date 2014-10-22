@@ -8,7 +8,7 @@ def run():
   Arbitrary('string').property(
     'x =~ /^[a-zA-Z0-9]+$/g', 
     lambda x : re.match(r'^[a-zA-Z0-9]+$', x) is not None
-  ).run(100, verbose=False).result()
+  ).run(100).result(verbose=False)
 
 if __name__ == '__main__':
   run()
