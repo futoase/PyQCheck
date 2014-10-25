@@ -4,6 +4,7 @@ import re
 import sys
 import traceback
 import marshal
+from arbitrary import Arbitrary
 
 
 class PropResult:
@@ -51,6 +52,25 @@ class Prop:
 
         except exception as error:
             return PropResult.fail(func.__name__, inputs, error)
+
+
+def for_all(arbitraries, label, func):
+    arb = Arbitrary(*arbitraries)
+    if type(func) == PossibleFuncToThrow:
+        return Prop(arb, func.to_function, label, *(func.exceptions))
+    else:
+        return Prop(arb, func, label)
+
+
+class PossibleFuncToThrow:
+    def __init__(self, func, should_all_throw, *exception):
+        self.to_function = func
+        self.should_all_throw = should_all_throw
+        self.exceptions = exception
+
+
+def may_throw(func, *exception):
+    return PossibleFuncToThrow(func, False, *exception)
 
 
 class RunningResult:

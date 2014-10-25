@@ -30,7 +30,7 @@ if not SCRIPT_DIR in sys.path:
 
 from multiprocessing import Process
 
-from prop import Prop, PropRunner
+from prop import Prop, PropRunner, for_all, may_throw
 from arbitrary import Arbitrary, ArbitraryAbstraction
 from pyqworker import PyQWorker
 from util import PrettyPrinter
