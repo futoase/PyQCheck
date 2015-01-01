@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from _import import PyQCheck, Arbitrary, set_arbitrary
+from _import import PyQCheck, Arbitrary, set_arbitrary, for_all
 from decimal import Decimal, getcontext
 
 getcontext().prec = 60
@@ -122,3 +122,37 @@ describe "PyQCheck Test":
     assert test_3.label == 'len(chars) <= 10'
     assert test_3.success == TEST_COUNT
     assert test_3.failure == 0
+
+  it "can register 2 tests and should succeed when it runs them":
+    TEST_COUNT = 100
+    TEST_LABEL_1 = '!(x || y) == !x && !y'
+    TEST_LABEL_2 = 'x * y == y * x and x + y == y + x'
+
+    def eq(x,y):
+      return x * y == y * x and x + y == y + x
+
+    results = PyQCheck().add(
+      for_all(
+        ('boolean', 'boolean'),
+        TEST_LABEL_1,
+        lambda x, y: (not(x or y)) == ((not x) and (not y))
+      )
+    ).add(
+      for_all(
+        ('integer', 'integer'),
+        TEST_LABEL_2,
+        eq
+      )
+    ).run(TEST_COUNT).results
+
+    assert len(results) == 2
+
+    result_1 = results[0]
+    result_2 = results[1]
+
+    assert result_1.label == TEST_LABEL_1
+    assert result_1.success == TEST_COUNT
+    assert result_1.failure == 0
+    assert result_2.label == TEST_LABEL_2
+    assert result_2.success == TEST_COUNT
+    assert result_2.failure == 0
